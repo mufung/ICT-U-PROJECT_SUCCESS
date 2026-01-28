@@ -1,8 +1,9 @@
- import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import {
   CognitoUserPool,
   CognitoUserAttribute
 } from "amazon-cognito-identity-js";
+import { useEffect } from "react";
 import { cognitoConfig } from "../config/config";
 
 const pool = new CognitoUserPool({
@@ -15,7 +16,15 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const role = params.get("role"); // TEACHER | STUDENT
-  const department = params.get("department");
+  const department = params.get("department"); // ICT | ENGINEERING | CHEMISTRY
+
+  // 🚨 HARD GUARD — DO NOT ALLOW INVALID SIGNUPS
+  useEffect(() => {
+    if (!role || !department) {
+      alert("Invalid signup flow. Please select role and department.");
+      navigate("/");
+    }
+  }, [role, department, navigate]);
 
   const submit = (e) => {
     e.preventDefault();
@@ -30,7 +39,10 @@ export default function Signup() {
     ];
 
     pool.signUp(email, password, attributes, null, (err) => {
-      if (err) return alert(err.message);
+      if (err) {
+        alert(err.message);
+        return;
+      }
 
       alert("Account created. Check email to confirm.");
       navigate("/login");
@@ -41,10 +53,10 @@ export default function Signup() {
     <form onSubmit={submit}>
       <h2>{role} Signup — {department}</h2>
 
-      <input name="email" required />
-      <input name="password" type="password" required />
+      <input name="email" type="email" placeholder="Email" required />
+      <input name="password" type="password" placeholder="Password" required />
 
-      <button>Create Account</button>
+      <button type="submit">Create Account</button>
     </form>
   );
 }
