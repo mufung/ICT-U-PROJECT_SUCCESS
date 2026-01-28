@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import RequireAuth from "./auth/RequireAuth";
 
@@ -8,6 +8,7 @@ import SelectRole from "./pages/SelectRole";
 import SelectDepartment from "./pages/SelectDepartment";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
+import Confirm from "./pages/Confirm"; // ✅ ADDED
 
 /* Teacher pages */
 import TeacherDashboard from "./pages/teacher/TeacherDashboard";
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/select-department" element={<SelectDepartment />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/confirm" element={<Confirm />} /> {/* ✅ ADDED */}
 
           {/* Teacher Routes */}
           <Route
