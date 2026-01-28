@@ -1,0 +1,137 @@
+/* =========================
+   GLOBAL RESET & VARIABLES
+========================= */
+
+:root {
+  --primary-color: #1f3a5f;
+  --secondary-color: #3a6ea5;
+  --accent-color: #e36414;
+  --background-color: #0f172a;
+  --card-background: #111827;
+  --text-color: #e5e7eb;
+  --muted-text: #9ca3af;
+  --success-color: #22c55e;
+  --error-color: #ef4444;
+  --border-radius: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================
+   BASE LAYOUT
+========================= */
+
+body {
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: linear-gradient(135deg, #020617, #0f172a);
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 30px;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================
+   TYPOGRAPHY
+========================= */
+
+h1 {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+p {
+  color: var(--muted-text);
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  margin: 10px 10px 0 0;
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background-color: #4b5563;
+  cursor: not-allowed;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+a {
+  text-decoration: none;
+}
+
+/* =========================
+   CARDS (RESULTS / COMPLAINTS)
+========================= */
+
+.card {
+  background-color: #020617;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-left: 4px solid var(--secondary-color);
+  border-radius: var(--border-radius);
+}
+
+.card.success {
+  border-left-color: var(--success-color);
+}
+
+.card.error {
+  border-left-color: var(--error-color);
+}
+
+/* =========================
+   INPUTS (FOR LATER USE)
+========================= */
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border-radius: var(--border-radius);
+  border: none;
+  background-color: #020617;
+  color: var(--text-color);
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--secondary-color);
+}
