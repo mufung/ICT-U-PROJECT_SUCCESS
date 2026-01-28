@@ -1,15 +1,28 @@
-import { createContext, useContext, useState } from "react";
+ import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(null);
 
-  const login = ({ role, department }) => {
-    setAuth({ role, department });
+  // 🔁 Restore session on reload
+  useEffect(() => {
+    const stored = localStorage.getItem("unimanage_auth");
+    if (stored) {
+      setAuth(JSON.parse(stored));
+    }
+  }, []);
+
+  const login = ({ role, department, token }) => {
+    const authData = { role, department, token };
+    setAuth(authData);
+    localStorage.setItem("unimanage_auth", JSON.stringify(authData));
   };
 
-  const logout = () => setAuth(null);
+  const logout = () => {
+    setAuth(null);
+    localStorage.removeItem("unimanage_auth");
+  };
 
   return (
     <AuthContext.Provider value={{ auth, login, logout }}>
@@ -18,4 +31,10 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+  return ctx;
+};
