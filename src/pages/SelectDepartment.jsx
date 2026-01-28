@@ -1,26 +1,40 @@
-import { useSearchParams, useNavigate } from "react-router-dom";
+ import { useSearchParams, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function SelectDepartment() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
 
   const role = params.get("role");
-  const department = params.get("department");
+
+  // 🔒 HARD BLOCK — role must exist
+  useEffect(() => {
+    if (!role) {
+      navigate("/");
+    }
+  }, [role, navigate]);
+
+  const departments = ["ICT", "ENGINEERING", "CHEMISTRY"];
 
   return (
     <div>
-      <h2>{role} — {department}</h2>
+      <h2>{role} — Select Department</h2>
 
-      <button onClick={() =>
-        navigate(`/login?role=${role}&department=${department}`)
-      }>
-        Login
-      </button>
+      {departments.map((dep) => (
+        <button
+          key={dep}
+          onClick={() =>
+            navigate(`/signup?role=${role}&department=${dep}`)
+          }
+        >
+          {dep}
+        </button>
+      )}
 
-      <button onClick={() =>
-        navigate(`/signup?role=${role}&department=${department}`)
-      }>
-        Sign Up
+      <hr />
+
+      <button onClick={() => navigate(`/login?role=${role}`)}>
+        Already have an account? Login
       </button>
     </div>
   );
