@@ -1,22 +1,18 @@
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function SelectRole() {
-  const [params] = useSearchParams();
-  const role = params.get("role");
   const navigate = useNavigate();
 
   return (
     <div>
-      <h2>{role} — Select Department</h2>
+      <h2>Select Role</h2>
 
-      {["ICT", "ENGINEERING", "CHEMISTRY", "TEST"].map(dep => (
+      {["TEACHER", "STUDENT"].map(role => (
         <button
-          key={dep}
-          onClick={() =>
-            navigate(`/select-department?role=${role}&department=${dep}`)
-          }
+          key={role}
+          onClick={() => navigate(`/select-department?role=${role}`)}
         >
-          {dep}
+          {role}
         </button>
       ))}
     </div>
