@@ -1,4 +1,4 @@
-export default function ReviewComplaints() {
+export default function ReviewComplaint() {
   return (
     <div>
       <p>Student: John Doe</p>
