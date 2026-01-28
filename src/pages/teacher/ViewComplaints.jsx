@@ -1,4 +1,4 @@
-import ReviewComplaint from "./ReviewComplaint";
+import ReviewComplaints from "./ReviewComplaint";
 
 export default function ViewComplaints() {
   return (
