@@ -14,7 +14,6 @@ export default function Signup() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
 
-  const role = params.get("role");
   const department = params.get("department");
 
   const submit = (e) => {
@@ -34,14 +33,14 @@ export default function Signup() {
     pool.signUp(email, password, attributes, null, (err) => {
       if (err) return alert(err.message);
 
-      alert("Signup successful. Confirm email.");
-      navigate(`/login?role=${role}&department=${department}`);
+      alert("Account created. Check your email to confirm.");
+      navigate("/login");
     });
   };
 
   return (
     <form onSubmit={submit}>
-      <h2>{role} Signup — {department}</h2>
+      <h2>Signup — {department}</h2>
 
       <input name="email" placeholder="Email" required />
       <input name="password" type="password" required />
