@@ -18,19 +18,22 @@ export default function Login() {
   const navigate = useNavigate();
   const { setAuth } = useAuth();
 
-  const role = params.get("role");
+  const roleParam = params.get("role"); // TEACHER or STUDENT (from URL)
 
   const submit = (e) => {
     e.preventDefault();
 
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
     const user = new CognitoUser({
-      Username: e.target.email.value,
+      Username: email,
       Pool: pool,
     });
 
     const auth = new AuthenticationDetails({
-      Username: e.target.email.value,
-      Password: e.target.password.value,
+      Username: email,
+      Password: password,
     });
 
     user.authenticateUser(auth, {
@@ -38,22 +41,46 @@ export default function Login() {
         const decoded = decodeJWT(session.getIdToken().getJwtToken());
 
         const department = decoded["custom:department"];
-        const groups = decoded["cognito:groups"];
+        const groups = decoded["cognito:groups"] || [];
 
-        setAuth({ role: groups[0], department });
+        // 🔐 SAFETY CHECK — prevents 400 / silent failures
+        if (!groups.length) {
+          alert("Account not fully provisioned yet. Please contact admin.");
+          return;
+        }
 
-        navigate(groups[0] === "TEACHER" ? "/teacher" : "/student");
+        const role = groups[0];
+
+        setAuth({ role, department });
+
+        navigate(role === "TEACHER" ? "/teacher" : "/student");
       },
-      onFailure: err => alert(err.message),
+
+      onFailure: (err) => {
+        alert(err.message || "Login failed");
+      },
     });
   };
 
   return (
     <form onSubmit={submit}>
-      <h2>{role} Login</h2>
-      <input name="email" />
-      <input name="password" type="password" />
-      <button>Login</button>
+      <h2>{roleParam} Login</h2>
+
+      <input
+        name="email"
+        type="email"
+        placeholder="Email"
+        required
+      />
+
+      <input
+        name="password"
+        type="password"
+        placeholder="Password"
+        required
+      />
+
+      <button type="submit">Login</button>
     </form>
   );
 }
