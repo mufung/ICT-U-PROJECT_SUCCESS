@@ -1,4 +1,4 @@
- import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import RequireAuth from "./auth/RequireAuth";
 
@@ -8,7 +8,7 @@ import SelectRole from "./pages/SelectRole";
 import SelectDepartment from "./pages/SelectDepartment";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
-import Confirm from "./pages/Confirm"; // ✅ ADDED
+import Confirm from "./pages/Confirm";
 
 /* Teacher pages */
 import TeacherDashboard from "./pages/teacher/TeacherDashboard";
@@ -35,9 +35,13 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/select-role" element={<SelectRole />} />
           <Route path="/select-department" element={<SelectDepartment />} />
+
+          {/* 🔧 STEP 1 FIX: allow login with or without trailing slash */}
           <Route path="/login" element={<Login />} />
+          <Route path="/login/" element={<Login />} />
+
           <Route path="/signup" element={<Signup />} />
-          <Route path="/confirm" element={<Confirm />} /> {/* ✅ ADDED */}
+          <Route path="/confirm" element={<Confirm />} />
 
           {/* Teacher Routes */}
           <Route
