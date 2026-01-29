@@ -16,70 +16,54 @@ const pool = new CognitoUserPool({
 export default function Login() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const { login } = useAuth(); // ✅ FIX HERE
 
-  const roleParam = params.get("role"); // TEACHER or STUDENT (from URL)
+  const role = params.get("role");
 
   const submit = (e) => {
     e.preventDefault();
 
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-
     const user = new CognitoUser({
-      Username: email,
+      Username: e.target.email.value,
       Pool: pool,
     });
 
-    const auth = new AuthenticationDetails({
-      Username: email,
-      Password: password,
+    const authDetails = new AuthenticationDetails({
+      Username: e.target.email.value,
+      Password: e.target.password.value,
     });
 
-    user.authenticateUser(auth, {
+    user.authenticateUser(authDetails, {
       onSuccess: (session) => {
         const decoded = decodeJWT(session.getIdToken().getJwtToken());
 
         const department = decoded["custom:department"];
-        const groups = decoded["cognito:groups"] || [];
+        const groups = decoded["cognito:groups"];
 
-        // 🔐 SAFETY CHECK — prevents 400 / silent failures
-        if (!groups.length) {
-          alert("Account not fully provisioned yet. Please contact admin.");
+        if (!groups || groups.length === 0) {
+          alert("User has no role assigned");
           return;
         }
 
-        const role = groups[0];
+        login({
+          role: groups[0],
+          department,
+        }); // ✅ FIX HERE
 
-        setAuth({ role, department });
-
-        navigate(role === "TEACHER" ? "/teacher" : "/student");
+        navigate(groups[0] === "TEACHER" ? "/teacher" : "/student");
       },
 
       onFailure: (err) => {
-        alert(err.message || "Login failed");
+        alert(err.message);
       },
     });
   };
 
   return (
     <form onSubmit={submit}>
-      <h2>{roleParam} Login</h2>
-
-      <input
-        name="email"
-        type="email"
-        placeholder="Email"
-        required
-      />
-
-      <input
-        name="password"
-        type="password"
-        placeholder="Password"
-        required
-      />
-
+      <h2>{role} Login</h2>
+      <input name="email" placeholder="Email" required />
+      <input name="password" type="password" placeholder="Password" required />
       <button type="submit">Login</button>
     </form>
   );
