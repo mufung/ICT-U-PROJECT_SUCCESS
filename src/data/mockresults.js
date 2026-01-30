@@ -1,4 +1,4 @@
-import { REVIEW_STATUS, RESULT_STATUS } from "../models/resultsmodel";
+ import { REVIEW_STATUS, RESULT_STATUS } from "../models/resultsmodel";
 
 export const mockResults = [
   {
@@ -7,8 +7,7 @@ export const mockResults = [
     studentId: "student-1",
     courseCode: "CSC101",
     score: 68,
-    reviewStatus: REVIEW_STATUS.PENDING,
-    complaint: null,
+    reviewStatus: REVIEW_STATUS.ERROR,
   },
 ];
 
