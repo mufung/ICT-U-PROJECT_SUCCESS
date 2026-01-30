@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import RequireAuth from "./auth/RequireAuth";
 import { StudentResultsProvider } from "./state/StudentResultsContext";
@@ -11,7 +11,7 @@ import Login from "./auth/Login";
 import Signup from "./auth/Signup";
 import Confirm from "./pages/Confirm";
 
-/* Teacher */
+/* Teacher Pages */
 import TeacherDashboard from "./pages/teacher/TeacherDashboard";
 import UploadResults from "./pages/teacher/UploadResults";
 import ViewComplaints from "./pages/teacher/ViewComplaints";
@@ -19,7 +19,7 @@ import ErrorResults from "./pages/teacher/ErrorResults";
 import ResultsUnderCorrection from "./pages/teacher/ResultsUnderCorrection";
 import CorrectedResults from "./pages/teacher/CorrectedResults";
 
-/* Student */
+/* Student Pages */
 import StudentDashboard from "./pages/student/StudentDashboard";
 import ViewResults from "./pages/student/ViewResults";
 import FileComplaint from "./pages/student/FileComplaint";
@@ -32,6 +32,7 @@ export default function App() {
       <StudentResultsProvider>
         <BrowserRouter>
           <Routes>
+            {/* Public */}
             <Route path="/" element={<Home />} />
             <Route path="/select-role" element={<SelectRole />} />
             <Route path="/select-department" element={<SelectDepartment />} />
@@ -39,7 +40,7 @@ export default function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/confirm" element={<Confirm />} />
 
-            {/* Teacher Routes */}
+            {/* Teacher - Protected */}
             <Route path="/teacher" element={<RequireAuth role="TEACHER"><TeacherDashboard /></RequireAuth>} />
             <Route path="/teacher/upload" element={<RequireAuth role="TEACHER"><UploadResults /></RequireAuth>} />
             <Route path="/teacher/complaints" element={<RequireAuth role="TEACHER"><ViewComplaints /></RequireAuth>} />
@@ -47,7 +48,7 @@ export default function App() {
             <Route path="/teacher/under-correction" element={<RequireAuth role="TEACHER"><ResultsUnderCorrection /></RequireAuth>} />
             <Route path="/teacher/corrected" element={<RequireAuth role="TEACHER"><CorrectedResults /></RequireAuth>} />
 
-            {/* Student Routes */}
+            {/* Student - Protected */}
             <Route path="/student" element={<RequireAuth role="STUDENT"><StudentDashboard /></RequireAuth>} />
             <Route path="/student/results" element={<RequireAuth role="STUDENT"><ViewResults /></RequireAuth>} />
             <Route path="/student/complaint" element={<RequireAuth role="STUDENT"><FileComplaint /></RequireAuth>} />
