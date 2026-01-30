@@ -1,5 +1,5 @@
  import { createContext, useContext, useState } from "react";
-import { mockResults } from "../data/mockresults"; 
+import { mockResults } from "../data/mockresults";
 import { REVIEW_STATUS } from "../models/resultsmodel";
 
 const StudentResultsContext = createContext(null);
@@ -7,16 +7,18 @@ const StudentResultsContext = createContext(null);
 export const StudentResultsProvider = ({ children }) => {
   const [results, setResults] = useState(mockResults);
 
-  // Function for Student to mark OK/Error
+  // Student marks OK or ERROR
   const markResult = (resultId, status) => {
     setResults(prev =>
       prev.map(r =>
-        r.resultId === resultId ? { ...r, reviewStatus: status } : r
+        r.resultId === resultId
+          ? { ...r, reviewStatus: status }
+          : r
       )
     );
   };
 
-  // Function for Teacher to mark as Under Correction
+  // Teacher starts correction
   const markUnderCorrection = (resultId) => {
     setResults(prev =>
       prev.map(r =>
@@ -27,29 +29,37 @@ export const StudentResultsProvider = ({ children }) => {
     );
   };
 
-  // Function for Teacher to update the score
+  // Teacher updates score
   const updateScore = (resultId, newScore) => {
     setResults(prev =>
       prev.map(r =>
         r.resultId === resultId
-          ? { ...r, score: newScore }
+          ? { ...r, score: Number(newScore) }
           : r
       )
     );
   };
 
   return (
-    <StudentResultsContext.Provider value={{ results, markResult, markUnderCorrection, updateScore }}>
+    <StudentResultsContext.Provider
+      value={{
+        results,
+        markResult,
+        markUnderCorrection,
+        updateScore,
+      }}
+    >
       {children}
     </StudentResultsContext.Provider>
   );
 };
 
-// This is the specific part the Teacher's ViewComplaints needs!
 export const useStudentResults = () => {
   const ctx = useContext(StudentResultsContext);
   if (!ctx) {
-    throw new Error("useStudentResults must be used inside StudentResultsProvider");
+    throw new Error(
+      "useStudentResults must be used inside StudentResultsProvider"
+    );
   }
   return ctx;
 };
