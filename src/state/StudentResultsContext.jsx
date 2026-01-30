@@ -1,11 +1,14 @@
-import { createContext, useContext, useState } from "react";
-import { mockStudentResults } from "../data/mockResults";
-import { REVIEW_STATUS } from "../models/resultModel";
+ import { createContext, useContext, useState } from "react";
+// FIX: Path matches lowercase "mockresults.js" on GitHub
+import { mockResults } from "../data/mockresults"; 
+// FIX: Path matches "resultsmodel.js" on GitHub
+import { REVIEW_STATUS } from "../models/resultsmodel";
 
 const StudentResultsContext = createContext(null);
 
 export const StudentResultsProvider = ({ children }) => {
-  const [results, setResults] = useState(mockStudentResults);
+  // FIX: Using the exported name 'mockResults'
+  const [results, setResults] = useState(mockResults);
 
   const markResult = (resultId, status) => {
     setResults(prev =>
