@@ -1,59 +1,44 @@
- import { useNavigate } from "react-router-dom";
+import { useStudentResults } from "../../state/StudentResultsContext";
+import { REVIEW_STATUS } from "../../models/resultsmodel";
 
 export default function ViewComplaints() {
-  const navigate = useNavigate();
+  const { results } = useStudentResults();
 
-  // Mock data — backend will replace this
-  const uploadedResults = [
-    {
-      id: 1,
-      course: "Math 101",
-      totalStudents: 100,
-      errorCount: 12,
-    },
-    {
-      id: 2,
-      course: "Physics 201",
-      totalStudents: 80,
-      errorCount: 3,
-    },
-  ];
-
-  if (uploadedResults.length === 0) {
-    return (
-      <div>
-        <h2>Complaints</h2>
-        <p>No complaints available.</p>
-      </div>
-    );
-  }
+  const errorResults = results.filter(
+    r => r.reviewStatus === REVIEW_STATUS.ERROR
+  );
 
   return (
     <div>
-      <h2>Student Complaints Overview</h2>
+      <h2>Student Complaints</h2>
 
-      {uploadedResults.map((result) => (
-        <div key={result.id} className="card">
+      {errorResults.length === 0 && (
+        <p>No complaints submitted.</p>
+      )}
+
+      {errorResults.map(result => (
+        <div
+          key={result.resultId}
+          style={{
+            border: "1px solid red",
+            padding: "10px",
+            marginBottom: "10px",
+            borderRadius: "6px",
+          }}
+        >
           <p>
-            <strong>Course:</strong> {result.course}
+            <strong>Student ID:</strong> {result.studentId}
           </p>
-
           <p>
-            <strong>Total Students:</strong> {result.totalStudents}
+            <strong>Course:</strong> {result.courseCode}
+          </p>
+          <p>
+            <strong>Score:</strong> {result.score}
           </p>
 
-          <p style={{ color: result.errorCount > 0 ? "red" : "green" }}>
-            <strong>Error Complaints:</strong> {result.errorCount}
+          <p style={{ color: "red" }}>
+            ⚠ Marked as ERROR by student
           </p>
-
-          <button
-            disabled={result.errorCount === 0}
-            onClick={() =>
-              navigate(`/teacher/errors?resultId=${result.id}`)
-            }
-          >
-            Review Errors
-          </button>
         </div>
       ))}
     </div>
