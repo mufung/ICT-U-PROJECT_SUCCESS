@@ -1,6 +1,11 @@
- export const REVIEW_STATUS = {
+export const RESULT_STATUS = {
+  PUBLISHED: "PUBLISHED",
+  UNDER_CORRECTION: "UNDER_CORRECTION",
+  CORRECTED: "CORRECTED",
+};
+
+export const REVIEW_STATUS = {
   OK: "OK",
   ERROR: "ERROR",
-  PENDING: "PENDING",      // Under correction
-  CORRECTED: "CORRECTED",  // Fixed
+  PENDING: "PENDING",
 };
