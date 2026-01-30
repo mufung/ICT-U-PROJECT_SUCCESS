@@ -1,6 +1,7 @@
-import { REVIEW_STATUS, RESULT_STATUS } from "../models/resultModel";
+// FIX: Path now matches the plural "resultsmodel.js"
+import { REVIEW_STATUS, RESULT_STATUS } from "../models/resultsmodel";
 
-export const mockStudentResults = [
+export const mockResults = [
   {
     resultId: "r1",
     batchId: "b1",
