@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import RequireAuth from "./auth/RequireAuth";
 
+/* 🔐 Student Results State */
+import { StudentResultsProvider } from "./state/StudentResultsContext";
+
 /* Public pages */
 import Home from "./pages/Home";
 import SelectRole from "./pages/SelectRole";
@@ -31,19 +34,17 @@ export default function App() {
       <BrowserRouter>
         <Routes>
 
-          {/* Public Routes */}
+          {/* ---------------- PUBLIC ROUTES ---------------- */}
           <Route path="/" element={<Home />} />
           <Route path="/select-role" element={<SelectRole />} />
           <Route path="/select-department" element={<SelectDepartment />} />
 
-          {/* 🔧 STEP 1 FIX: allow login with or without trailing slash */}
           <Route path="/login" element={<Login />} />
           <Route path="/login/" element={<Login />} />
-
           <Route path="/signup" element={<Signup />} />
           <Route path="/confirm" element={<Confirm />} />
 
-          {/* Teacher Routes */}
+          {/* ---------------- TEACHER ROUTES ---------------- */}
           <Route
             path="/teacher"
             element={
@@ -98,49 +99,59 @@ export default function App() {
             }
           />
 
-          {/* Student Routes */}
+          {/* ---------------- STUDENT ROUTES (WRAPPED) ---------------- */}
           <Route
             path="/student"
             element={
-              <RequireAuth role="STUDENT">
-                <StudentDashboard />
-              </RequireAuth>
+              <StudentResultsProvider>
+                <RequireAuth role="STUDENT">
+                  <StudentDashboard />
+                </RequireAuth>
+              </StudentResultsProvider>
             }
           />
 
           <Route
             path="/student/results"
             element={
-              <RequireAuth role="STUDENT">
-                <ViewResults />
-              </RequireAuth>
+              <StudentResultsProvider>
+                <RequireAuth role="STUDENT">
+                  <ViewResults />
+                </RequireAuth>
+              </StudentResultsProvider>
             }
           />
 
           <Route
             path="/student/complaint"
             element={
-              <RequireAuth role="STUDENT">
-                <FileComplaint />
-              </RequireAuth>
+              <StudentResultsProvider>
+                <RequireAuth role="STUDENT">
+                  <FileComplaint />
+                </RequireAuth>
+              </StudentResultsProvider>
             }
           />
 
           <Route
             path="/student/errors"
             element={
-              <RequireAuth role="STUDENT">
-                <StudentErrorResults />
-              </RequireAuth>
+              <StudentResultsProvider>
+                <RequireAuth role="STUDENT">
+                  <StudentErrorResults />
+                </RequireAuth>
+              </StudentResultsProvider>
             }
           />
 
           <Route
             path="/student/corrected"
             element={
-              <RequireAuth role="STUDENT">
-                <StudentCorrectedResults />
-              </RequireAuth>
+              <StudentResultsProvider>
+                <RequireAuth role="STUDENT">
+                  <StudentCorrectedResults />
+                </RequireAuth>
+              </StudentResultsProvider>
             }
           />
 
