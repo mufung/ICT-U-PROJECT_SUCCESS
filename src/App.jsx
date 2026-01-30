@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import RequireAuth from "./auth/RequireAuth";
 
-/* 🔐 Student Results State - Now active since you pushed the folders! */
+/* 🔐 Student Results State */
 import { StudentResultsProvider } from "./state/StudentResultsContext";
 
 /* Public pages */
@@ -49,7 +49,7 @@ export default function App() {
           <Route path="/teacher/under-correction" element={<RequireAuth role="TEACHER"><ResultsUnderCorrection /></RequireAuth>} />
           <Route path="/teacher/corrected" element={<RequireAuth role="TEACHER"><CorrectedResults /></RequireAuth>} />
 
-          {/* ---------------- STUDENT ROUTES (WRAPPED WITH STATE) ---------------- */}
+          {/* ---------------- STUDENT ROUTES (WRAPPED) ---------------- */}
           <Route
             path="/student"
             element={
