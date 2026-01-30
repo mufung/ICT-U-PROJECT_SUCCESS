@@ -1,8 +1,8 @@
-Import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import RequireAuth from "./auth/RequireAuth";
 
-/* 🔐 Student Results State */
+/* 🔐 Student Results State - Now active since you pushed the folders! */
 import { StudentResultsProvider } from "./state/StudentResultsContext";
 
 /* Public pages */
@@ -33,73 +33,23 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-
           {/* ---------------- PUBLIC ROUTES ---------------- */}
           <Route path="/" element={<Home />} />
           <Route path="/select-role" element={<SelectRole />} />
           <Route path="/select-department" element={<SelectDepartment />} />
-
           <Route path="/login" element={<Login />} />
-          <Route path="/login/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/confirm" element={<Confirm />} />
 
           {/* ---------------- TEACHER ROUTES ---------------- */}
-          <Route
-            path="/teacher"
-            element={
-              <RequireAuth role="TEACHER">
-                <TeacherDashboard />
-              </RequireAuth>
-            }
-          />
+          <Route path="/teacher" element={<RequireAuth role="TEACHER"><TeacherDashboard /></RequireAuth>} />
+          <Route path="/teacher/upload" element={<RequireAuth role="TEACHER"><UploadResults /></RequireAuth>} />
+          <Route path="/teacher/complaints" element={<RequireAuth role="TEACHER"><ViewComplaints /></RequireAuth>} />
+          <Route path="/teacher/errors" element={<RequireAuth role="TEACHER"><ErrorResults /></RequireAuth>} />
+          <Route path="/teacher/under-correction" element={<RequireAuth role="TEACHER"><ResultsUnderCorrection /></RequireAuth>} />
+          <Route path="/teacher/corrected" element={<RequireAuth role="TEACHER"><CorrectedResults /></RequireAuth>} />
 
-          <Route
-            path="/teacher/upload"
-            element={
-              <RequireAuth role="TEACHER">
-                <UploadResults />
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="/teacher/complaints"
-            element={
-              <RequireAuth role="TEACHER">
-                <ViewComplaints />
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="/teacher/errors"
-            element={
-              <RequireAuth role="TEACHER">
-                <ErrorResults />
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="/teacher/under-correction"
-            element={
-              <RequireAuth role="TEACHER">
-                <ResultsUnderCorrection />
-              </RequireAuth>
-            }
-          />
-
-          <Route
-            path="/teacher/corrected"
-            element={
-              <RequireAuth role="TEACHER">
-                <CorrectedResults />
-              </RequireAuth>
-            }
-          />
-
-          {/* ---------------- STUDENT ROUTES (WRAPPED) ---------------- */}
+          {/* ---------------- STUDENT ROUTES (WRAPPED WITH STATE) ---------------- */}
           <Route
             path="/student"
             element={
@@ -154,7 +104,6 @@ export default function App() {
               </StudentResultsProvider>
             }
           />
-
         </Routes>
       </BrowserRouter>
     </AuthProvider>
