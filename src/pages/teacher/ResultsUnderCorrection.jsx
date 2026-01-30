@@ -1,48 +1,35 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useStudentResults } from "../../state/StudentResultsContext";
+import { REVIEW_STATUS } from "../../models/resultsmodel";
 
 export default function ResultsUnderCorrection() {
-  const navigate = useNavigate();
-  const [params] = useSearchParams();
+  const { results } = useStudentResults();
 
-  const resultId = params.get("resultId");
-  const studentId = params.get("studentId");
-
-  // Mock result data (will come from backend later)
-  const [score, setScore] = useState(65);
-
-  if (!resultId || !studentId) {
-    return <p>Invalid correction context.</p>;
-  }
-
-  const saveCorrection = () => {
-    // Later: API call → update result + status = CORRECTED
-    navigate("/teacher/corrected");
-  };
+  const underCorrection = results.filter(
+    r => r.reviewStatus === REVIEW_STATUS.PENDING
+  );
 
   return (
     <div>
-      <h2>Result Under Correction</h2>
+      <h2>Results Under Correction</h2>
 
-      <div className="card">
-        <p><strong>Course:</strong> Math 101</p>
-        <p><strong>Student ID:</strong> {studentId}</p>
+      {underCorrection.length === 0 && (
+        <p>No results under correction.</p>
+      )}
 
-        <label>
-          Corrected Score:
-          <input
-            type="number"
-            value={score}
-            onChange={(e) => setScore(e.target.value)}
-          />
-        </label>
-
-        <br /><br />
-
-        <button onClick={saveCorrection}>
-          Save Correction
-        </button>
-      </div>
+      {underCorrection.map(r => (
+        <div
+          key={r.resultId}
+          style={{
+            border: "1px solid orange",
+            padding: "10px",
+            marginBottom: "10px",
+          }}
+        >
+          <p><strong>Student:</strong> {r.studentId}</p>
+          <p><strong>Course:</strong> {r.courseCode}</p>
+          <p><strong>Score:</strong> {r.score}</p>
+        </div>
+      ))}
     </div>
   );
 }
