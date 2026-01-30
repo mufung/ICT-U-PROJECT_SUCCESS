@@ -1,13 +1,13 @@
 import { createContext, useContext, useState } from "react";
 import { mockResults } from "../data/mockresults";
-import { REVIEW_STATUS } from "../models/resultsmodel";
+import { REVIEW_STATUS, RESULT_STATUS } from "../models/resultsmodel";
 
 const StudentResultsContext = createContext(null);
 
 export const StudentResultsProvider = ({ children }) => {
   const [results, setResults] = useState(mockResults);
 
-  // STUDENT: mark OK or ERROR
+  // Student marks OK or ERROR
   const markResult = (resultId, status) => {
     setResults(prev =>
       prev.map(r =>
@@ -18,7 +18,7 @@ export const StudentResultsProvider = ({ children }) => {
     );
   };
 
-  // TEACHER: start review → UNDER CORRECTION
+  // Teacher starts correction
   const markUnderCorrection = (resultId) => {
     setResults(prev =>
       prev.map(r =>
@@ -29,7 +29,7 @@ export const StudentResultsProvider = ({ children }) => {
     );
   };
 
-  // TEACHER: submit correction → CORRECTED
+  // Teacher submits correction
   const submitCorrection = (resultId, newScore) => {
     setResults(prev =>
       prev.map(r =>
@@ -37,7 +37,7 @@ export const StudentResultsProvider = ({ children }) => {
           ? {
               ...r,
               score: newScore,
-              reviewStatus: REVIEW_STATUS.CORRECTED,
+              reviewStatus: REVIEW_STATUS.OK,
             }
           : r
       )
