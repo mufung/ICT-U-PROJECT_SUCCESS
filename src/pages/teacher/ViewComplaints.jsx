@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { useStudentResults } from "../../state/StudentResultsContext";
 import { REVIEW_STATUS } from "../../models/resultsmodel";
 
 export default function ViewComplaints() {
   const { results } = useStudentResults();
+  const navigate = useNavigate();
 
   const errorResults = results.filter(
     r => r.reviewStatus === REVIEW_STATUS.ERROR
@@ -39,6 +41,16 @@ export default function ViewComplaints() {
           <p style={{ color: "red" }}>
             ⚠ Marked as ERROR by student
           </p>
+
+          {/* REVIEW BUTTON */}
+          <button
+            onClick={() =>
+              navigate(`/teacher/review/${result.resultId}`)
+            }
+            style={{ marginTop: "8px" }}
+          >
+            Review / Edit
+          </button>
         </div>
       ))}
     </div>
