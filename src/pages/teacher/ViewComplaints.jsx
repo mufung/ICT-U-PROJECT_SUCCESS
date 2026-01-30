@@ -1,12 +1,12 @@
- import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useStudentResults } from "../../state/StudentResultsContext";
 import { REVIEW_STATUS } from "../../models/resultsmodel";
 
 export default function ViewComplaints() {
-  const navigate = useNavigate();
   const { results } = useStudentResults();
+  const navigate = useNavigate();
 
-  const errorResults = results.filter(
+  const complaints = results.filter(
     r => r.reviewStatus === REVIEW_STATUS.ERROR
   );
 
@@ -14,40 +14,29 @@ export default function ViewComplaints() {
     <div>
       <h2>Student Complaints</h2>
 
-      {errorResults.length === 0 && (
+      {complaints.length === 0 && (
         <p>No complaints submitted.</p>
       )}
 
-      {errorResults.map(result => (
+      {complaints.map(r => (
         <div
-          key={result.resultId}
+          key={r.resultId}
           style={{
             border: "1px solid red",
             padding: "10px",
             marginBottom: "10px",
-            borderRadius: "6px",
           }}
         >
-          <p>
-            <strong>Student ID:</strong> {result.studentId}
-          </p>
-          <p>
-            <strong>Course:</strong> {result.courseCode}
-          </p>
-          <p>
-            <strong>Score:</strong> {result.score}
-          </p>
-
-          <p style={{ color: "red" }}>
-            ⚠ Marked as ERROR by student
-          </p>
+          <p><strong>Student:</strong> {r.studentId}</p>
+          <p><strong>Course:</strong> {r.courseCode}</p>
+          <p><strong>Score:</strong> {r.score}</p>
 
           <button
             onClick={() =>
-              navigate(`/teacher/review/${result.resultId}`)
+              navigate(`/teacher/review/${r.resultId}`)
             }
           >
-            Review / Edit
+            Review & Edit
           </button>
         </div>
       ))}
