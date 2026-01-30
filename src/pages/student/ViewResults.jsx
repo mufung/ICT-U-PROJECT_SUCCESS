@@ -8,47 +8,23 @@ export default function ViewResults() {
     <div>
       <h2>My Results</h2>
 
-      {results.map(result => (
-        <div
-          key={result.resultId}
-          style={{
-            border: "1px solid #ccc",
-            padding: "10px",
-            marginBottom: "10px",
-            borderRadius: "6px",
-          }}
-        >
-          <p>
-            <strong>Course:</strong> {result.courseCode}
-          </p>
-          <p>
-            <strong>Score:</strong> {result.score}
-          </p>
+      {results.map(r => (
+        <div key={r.resultId} className="card">
+          <p><strong>{r.courseCode}</strong> — Score: {r.score}</p>
 
-          <p>
-            <strong>Status:</strong>{" "}
-            {result.reviewStatus}
-          </p>
+          <button
+            style={{ color: "green" }}
+            onClick={() => markResult(r.resultId, REVIEW_STATUS.OK)}
+          >
+            ✔ No Error
+          </button>
 
-          <div style={{ display: "flex", gap: "10px" }}>
-            <button
-              style={{ background: "green", color: "white" }}
-              onClick={() =>
-                markResult(result.resultId, REVIEW_STATUS.OK)
-              }
-            >
-              ✔ No Error
-            </button>
-
-            <button
-              style={{ background: "red", color: "white" }}
-              onClick={() =>
-                markResult(result.resultId, REVIEW_STATUS.ERROR)
-              }
-            >
-              ✖ Has Error
-            </button>
-          </div>
+          <button
+            style={{ color: "red", marginLeft: "10px" }}
+            onClick={() => markResult(r.resultId, REVIEW_STATUS.ERROR)}
+          >
+            ✖ Has Error
+          </button>
         </div>
       ))}
     </div>
